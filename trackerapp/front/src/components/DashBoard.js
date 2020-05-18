@@ -1,9 +1,9 @@
 import React from 'react';
-import BookList from './BookList';
+import ExpenseList from './ExpenseList';
 
 const DashBoard = () => (
     <div className='container__list'>
-        <BookList />
+        <ExpenseList />
     </div>
 );
 

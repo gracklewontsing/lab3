@@ -1,27 +1,27 @@
-const booksReducerDefaultState = [];
+const expensesReducerDefaultState = [];
 
-export default (state = booksReducerDefaultState, action) => {
+export default (state = expensesReducerDefaultStateReducerDefaultState, action) => {
     switch (action.type) {
-        case 'ADD_BOOK':
+        case 'ADD_EXPENSE':
             return [
                 ...state,
-                action.book
+                action.expense
             ];
-        case 'REMOVE_BOOK':
+        case 'REMOVE_EXPENSE':
             return state.filter(({ id }) => id !== action.id);
-        case 'EDIT_BOOK':
-            return state.map((book) => {
-                if (book.id === action.id) {
+        case 'EDIT_EXPENSE':
+            return state.map((expense) => {
+                if (expense.id === action.id) {
                     return {
-                        ...book,
+                        ...expense,
                         ...action.updates
                     };
                 } else {
-                    return book;
+                    return expense;
                 }
             });
-        case 'GET_BOOKs':
-            return action.books;
+        case 'GET_EXPENSEs':
+            return action.expenses;
         default:
             return state;
     }

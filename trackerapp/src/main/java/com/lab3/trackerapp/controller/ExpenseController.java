@@ -1,5 +1,6 @@
 package com.lab3.trackerapp.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import com.lab3.trackerapp.model.Expense;
 import com.lab3.trackerapp.repo.ExpenseRepo;
+import com.lab3.trackerapp.exception.ExpenseNotFoundException;
 
 @RestController
 @Validated
@@ -85,31 +87,7 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping(value="/Expenses/cover/{id}")
-    public ResponseEntity<byte[]> getExpenseCoverById(@PathVariable(value = "id")
-                                                   @PositiveOrZero(message = "Id must be greater or equal to 0") Long id) {
-        Optional<Expense> existingExpense = ExpenseRepo.findById(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 
-        if (existingExpense.isPresent()) {
-            Expense Expense = existingExpense.get();
-
-            if (Expense.getCover() != null) {
-                byte[] cover = Expense.getCover();
-                headers.add("Content-Type", "image/jpeg");
-
-                ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(cover, headers, HttpStatus.OK);
-                return responseEntity;
-            } else {
-                ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                return responseEntity;
-            }
-        } else {
-            ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            return responseEntity;
-        }
-    }
 
     @GetMapping(value = "/Expenses/pdf/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public @ResponseBody byte[] getExpensePDFById(@PathVariable(value = "id")
@@ -125,7 +103,7 @@ public class ExpenseController {
 
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLUE);
-            Chunk chunk = new Chunk(Expense.getTitle(), font);
+            Chunk chunk = new Chunk(Expense.getId(), font);
 
             document.add(chunk);
             document.close();

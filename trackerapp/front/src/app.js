@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRouter from './routers/AppRouter';
 import getAppStore from './store/store';
-import { getBooks } from './actions/books';
+import { getExpenses } from './actions/expenses';
 import './styles/styles.scss';
 
 import { Provider } from 'react-redux';
@@ -15,6 +15,6 @@ const template = (
     </Provider>
 );
 
-store.dispatch(getBooks()).then(() => {
+store.dispatch(getExpenses()).then(() => {
     ReactDOM.render(template, document.getElementById('app'));
 });

@@ -1,27 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Book from './Book';
+import Expense from './Expense';
 
 const BookList = (props) => (
     <div>
-        Book List:
+        Expenses:
         <ul>
-            {props.books.map(book => {
+            {props.expenses.map(expense => {
                 return (
-                    <li key={book.id}>
-                        <Book {...book} />
+                    <li key={expense.id}>
+                        <Expense {...expense} />
                     </li>
                 );
             })}
         </ul>
-
     </div>
 );
 
 const mapStateToProps = (state) => {
     return {
-        books: state
+        expenses: state
     };
 }
 
-export default connect(mapStateToProps)(BookList);
+export default connect(mapStateToProps)(ExpenseList);

@@ -1,14 +1,14 @@
 import React from 'react';
-import BookForm from './BookForm';
+import ExpenseFormForm from './ExpenseForm';
 import { connect } from 'react-redux';
-import { editBook } from '../actions/books';
+import { editExpense } from '../actions/expenses';
 
-const EditBook = (props) => (
+const EditExpense = (props) => (
     <div className='container__box'>
-        <BookForm
-            book={props.book}
-            onSubmitBook={(book) => {
-                props.dispatch(editBook(props.book.id, book));
+        <ExpenseFormForm
+            expense={props.expense}
+            onSubmitExpense={(expense) => {
+                props.dispatch(editExpense(props.expense.id, expense));
                 props.history.push('/');
             }}
         />
@@ -17,9 +17,9 @@ const EditBook = (props) => (
 
 const mapStateToProps = (state, props) => {
     return {
-        book: state.find((book) =>
-            book.id === props.match.params.id)
+        expense: state.find((expense) =>
+            expense.id === props.match.params.id)
     };
 };
 
-export default connect(mapStateToProps)(EditBook);
+export default connect(mapStateToProps)(EditExpense);
