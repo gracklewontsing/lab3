@@ -18,6 +18,7 @@ export default class ExpenseForm extends React.Component {
             towhom: props.expense ? props.expense.towhom : '',
             needwant: props.expense ? props.expense.needwant: '',
             notes: props.expense ? props.expense.notes: '',
+
             error: ''
         };
     }
@@ -37,7 +38,7 @@ export default class ExpenseForm extends React.Component {
         this.setState(() => ({ method: method }));
     }
 
-    onToWhomChangeChange(e) {
+    onToWhomChange(e) {
         const towhom = e.target.value;
         this.setState(() => ({ towhom: towhom }));
     }
@@ -65,7 +66,8 @@ export default class ExpenseForm extends React.Component {
                     amount: this.state.amount,
                     method: this.state.method,
                     towhom: this.state.towhom,
-                    needwant: this.state.needwant
+                    needwant: this.state.needwant,
+                    notes: this.state.notes
                 }
             );
         }

@@ -5,7 +5,7 @@ const _addExpense = (expense) => ({
     expense
 });
 
-export const _addExpense = (expenseData = {
+export const addExpense = (expenseData = {
     date: '',
     amount: 0,
     method: '',
@@ -19,8 +19,8 @@ export const _addExpense = (expenseData = {
             amount: expenseData.amount,
             method: expenseData.method,
             towhom: expenseData.towhom,
-            needwant:expenseData.needwant,
-            notes:expenseData.notes
+            needwant: expenseData.needwant,
+            notes: expenseData.notes
         };
 
         return axios.post('expenses/create', expense).then(result => {
@@ -48,7 +48,7 @@ const _editExpense = (id, updates) => ({
     updates
 });
 
-export const _editExpense = (id, updates) => {
+export const editExpense = (id, updates) => {
     return (dispatch) => {
         return axios.put(`expenses/${id}`, updates).then(() => {
             dispatch(_editExpense(id, updates));

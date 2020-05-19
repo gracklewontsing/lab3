@@ -1,14 +1,16 @@
 import React from 'react';
-import ExpenseFormForm from './ExpenseForm';
+import ExpenseForm from './ExpenseForm';
 import { connect } from 'react-redux';
 import { editExpense } from '../actions/expenses';
 
-const EditExpense = (props) => (
+const EditExpense = props => (
     <div className='container__box'>
-        <ExpenseFormForm
+        <ExpenseForm
             expense={props.expense}
-            onSubmitExpense={(expense) => {
-                props.dispatch(editExpense(props.expense.id, expense));
+            onSubmitExpense={ (expense) => {
+                //console.log(expense);
+                //console.log(props);
+                props.dispatch(editExpense(props.match.params.id, expense));
                 props.history.push('/');
             }}
         />

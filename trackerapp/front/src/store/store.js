@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import books from '../reducers/expenses';
+import expenses from '../reducers/expenses';
 import thunk from 'redux-thunk';
 
 export default () => {

@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "book")
+@Table(name = "expense")
 public class Expense implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class Expense implements Serializable {
 
     @JsonFormat(pattern="dd-MM-yyyy")
     @Column(name = "date")
-    private Date date;
+    private String date;
 
     @Column(name = "amount")
     private Float amount;
@@ -42,7 +42,7 @@ public class Expense implements Serializable {
 
     public Expense(){}
 
-    public Expense(long id, Date date, Float amount, String method, String towhom, String needwant, String notes) {
+    public Expense(long id, String date, Float amount, String method, String towhom, String needwant, String notes) {
         this.id = id;
         this.date = date;
         this.amount = amount;
@@ -50,6 +50,19 @@ public class Expense implements Serializable {
         this.towhom = towhom;
         this.needwant = needwant;
         this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        return "Expense[" +
+                "id=" + id +
+                ", date=" + date +
+                ", amount=" + amount +
+                ", method='" + method + '\'' +
+                ", towhom='" + towhom + '\'' +
+                ", needwant='" + needwant + '\'' +
+                ", notes='" + notes + '\'' +
+                ']';
     }
 
     public long getId() {
@@ -60,11 +73,11 @@ public class Expense implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

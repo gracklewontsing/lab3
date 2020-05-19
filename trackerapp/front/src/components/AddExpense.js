@@ -6,7 +6,7 @@ import { addExpense } from '../actions/expenses';
 const AddExpense = (props) => (
     <div>
         <h3>Set Expense information:</h3>
-        <ExpenseFormForm
+        <ExpenseForm
             onSubmitExpense={(expense) => {
                 props.dispatch(addExpense(expense));
                 props.history.push('/');

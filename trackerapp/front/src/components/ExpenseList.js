@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Expense from './Expense';
 
-const BookList = (props) => (
+const ExpenseList = (props) => (
     <div>
         Expenses:
         <ul>

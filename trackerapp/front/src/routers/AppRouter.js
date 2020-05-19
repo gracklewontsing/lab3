@@ -15,6 +15,7 @@ const AppRouter = () => (
                 <Route path="/add" component={AddExpense} />
                 <Route path="/expense/:id" component={EditExpense} />
                 <Route component={NotFound} />
+
             </Switch>
         </div>
     </BrowserRouter>
