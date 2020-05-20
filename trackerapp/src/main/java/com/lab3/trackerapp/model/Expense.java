@@ -1,29 +1,32 @@
 package com.lab3.trackerapp.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.io.Serializable;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
+
+import javax.annotation.Resource;
+import javax.persistence.*;
+
 
 @Entity
-@Table(name = "expense")
+@Table(name = Expense.tableName)
 public class Expense implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String tableName = "expenses";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
-    @Column(name = "date")
-    private String date;
+    @Column(name = "day")
+    private Integer day;
+
+    @Column(name = "month")
+    private Integer month;
+
+    @Column(name = "year")
+    private Integer year;
 
     @Column(name = "amount")
     private Float amount;
@@ -40,30 +43,25 @@ public class Expense implements Serializable {
     @Column(name = "notes")
     private String notes;
 
-    public Expense(){}
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name="user_id", nullable=false)
+    @JsonBackReference
+    private User user;
 
-    public Expense(long id, String date, Float amount, String method, String towhom, String needwant, String notes) {
+    public Expense(long id, Integer day, Integer month, Integer year, Float amount, String method, String towhom, String needwant, String notes, User user) {
         this.id = id;
-        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.amount = amount;
         this.method = method;
         this.towhom = towhom;
         this.needwant = needwant;
         this.notes = notes;
+        this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "Expense[" +
-                "id=" + id +
-                ", date=" + date +
-                ", amount=" + amount +
-                ", method='" + method + '\'' +
-                ", towhom='" + towhom + '\'' +
-                ", needwant='" + needwant + '\'' +
-                ", notes='" + notes + '\'' +
-                ']';
-    }
+    public Expense(){}
 
     public long getId() {
         return id;
@@ -73,12 +71,28 @@ public class Expense implements Serializable {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public Integer getDay() {
+        return day;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDay(Integer day) {
+        this.day = day;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public Float getAmount() {
@@ -119,5 +133,18 @@ public class Expense implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

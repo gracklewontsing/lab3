@@ -1,17 +1,12 @@
 package com.lab3.trackerapp.controller;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.PositiveOrZero;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.InputStreamSource;
-import org.springframework.http.CacheControl;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,40 +15,62 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.lab3.trackerapp.model.Expense;
-import com.lab3.trackerapp.repo.ExpenseRepo;
-import com.lab3.trackerapp.exception.ExpenseNotFoundException;
 import com.lab3.trackerapp.pdf.GeneratePdfReport;
+import com.lab3.trackerapp.services.ExpenseService;
 
-@CrossOrigin (origins = "http://localhost:8081")
+@CrossOrigin
 @RestController
 @Validated
+@RequestMapping("/api/expense")
 public class ExpenseController {
-    @Resource
-    private ExpenseRepo expenseRepo;
+    @Autowired
+    private ExpenseService expenseService;
 
-    @GetMapping("/expenses")
-    public List<Expense> getExpenses() {
-        List<Expense> expenses = expenseRepo.findAll();
-        return expenses;
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        List<Expense> expenses = expenseService.findAll();
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/{id}")
-    public Expense getExpenseById(@PathVariable(value = "id")
-                            @PositiveOrZero(message = "Id must be greater or equal to 0") Long id) {
-        Optional<Expense> existingExpense = expenseRepo.findById(id);
-
-        if (existingExpense.isPresent()) {
-            return existingExpense.get();
+    @GetMapping("/{year}/{month}")
+    public ResponseEntity<?> getByMonthYear(@PathVariable("year") int year, @PathVariable("month") int month) {
+        List<Expense> result = new ArrayList<>();
+        if("All".equals(month)) {
+            result = expenseService.findByYear(year);
         } else {
-            throw new ExpenseNotFoundException("Expense not found with id " + id);
+            result = expenseService.findByMonthAndYear(month, year);
         }
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    @PostMapping("/expenses/create")
-    public Expense newExpense(@Valid @RequestBody Expense newExpense) {
-        return expenseRepo.save(newExpense);
+    @PostMapping
+    public ResponseEntity<?> addOrUpdateExpense(@RequestBody Expense expense) {
+        expenseService.saveOrUpdateExpense(expense);
+        return new ResponseEntity("Expense added succcessfully!", HttpStatus.OK);
     }
 
+
+    @DeleteMapping
+    public void deleteExpense(@RequestParam("id") long id) {
+        expenseService.deleteExpense(id);
+    }
+
+    @RequestMapping(value = "{year}/{month}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> expenseReport(@PathVariable("year") int year, @PathVariable("month") int month) {
+        var expenses = (List<Expense>) expenseService.findByMonthAndYear(month,year);
+        ByteArrayInputStream byteArray = GeneratePdfReport.expenseReport(expenses);
+
+        var headers = new HttpHeaders();
+        headers.add("Content-Disposition","inline;filename=expensereport.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(byteArray));
+    }
+}
+/*
     @PutMapping("/expenses/{id}")
     public Expense updateExpense(@Valid @PathVariable("id") Long id, @RequestBody Expense updatedExpense) {
         Optional<Expense> existingExpense = expenseRepo.findById(id);
@@ -72,32 +89,4 @@ public class ExpenseController {
         } else {
             throw new ExpenseNotFoundException("Expense not found with id " + updatedExpense.getId());
         }
-    }
-
-    @DeleteMapping("/expenses/{id}")
-    public void deleteExpense(@PathVariable(value = "id")
-                           @PositiveOrZero(message = "Id must be greater or equal to 0") Long id) {
-        Optional<Expense> existingExpense = expenseRepo.findById(id);
-
-        if (existingExpense.isPresent()) {
-            expenseRepo.deleteById(id);
-        } else {
-            throw new ExpenseNotFoundException("Expense not found with id " + id);
-        }
-    }
-
-    @RequestMapping(value = "/pdf", method= RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> expenseReport() {
-        var expenses = (List<Expense>) expenseRepo.findAll();
-        ByteArrayInputStream byteArray = GeneratePdfReport.expenseReport(expenses);
-
-        var headers = new HttpHeaders();
-        headers.add("Content-Disposition","inline;filename=expensereport.pdf");
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(byteArray));
-    }
-}
+    }*/

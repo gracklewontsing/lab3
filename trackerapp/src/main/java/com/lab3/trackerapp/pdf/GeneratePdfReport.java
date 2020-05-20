@@ -29,9 +29,9 @@ public class GeneratePdfReport {
 
         try {
 
-            PdfPTable table = new PdfPTable(7);
+            PdfPTable table = new PdfPTable(9);
             table.setWidthPercentage(60);
-            table.setWidths(new int[]{1, 3, 3, 3, 3, 3, 3});
+            table.setWidths(new int[]{1, 2, 2, 3, 3, 3, 3,3,3});
 
             Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 
@@ -73,7 +73,17 @@ public class GeneratePdfReport {
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
-                cell = new PdfPCell(new Phrase(expense.getDate()));
+                cell = new PdfPCell(new Phrase(String.valueOf(expense.getDay())));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(String.valueOf(expense.getMonth())));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(String.valueOf(expense.getYear())));
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
