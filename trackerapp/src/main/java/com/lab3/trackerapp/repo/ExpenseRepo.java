@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.lab3.trackerapp.model.Expense;
 
-
 @Repository
 public interface ExpenseRepo extends JpaRepository<Expense, Long> {
     List<Expense> findByMonthAndYear(int month, int year);

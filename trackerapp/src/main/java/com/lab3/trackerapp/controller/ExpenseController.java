@@ -46,15 +46,15 @@ public class ExpenseController {
     @PostMapping
     public ResponseEntity<?> addOrUpdateExpense(@RequestBody Expense expense) {
         expenseService.saveOrUpdateExpense(expense);
-        return new ResponseEntity("Expense added succcessfully!", HttpStatus.OK);
+        return new ResponseEntity("Expense added successfully!", HttpStatus.OK);
     }
-
 
     @DeleteMapping
     public void deleteExpense(@RequestParam("id") long id) {
         expenseService.deleteExpense(id);
     }
 
+    //send by email
     @RequestMapping(value = "{year}/{month}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> expenseReport(@PathVariable("year") int year, @PathVariable("month") int month) {
         var expenses = (List<Expense>) expenseService.findByMonthAndYear(month,year);
