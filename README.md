@@ -1,1 +1,26 @@
 # lab3
+
+Contains: root springboot trackerapp directory and front directory trackerapp/expensetracker
+
+# deployment
+
+Run a postgres server matching application.properties
+
+head to /trackerapp and run
+
+mvn clean install
+
+or
+
+mvn spring-boot:run
+
+then head to /trackerapp/expensetracker and run
+
+npm start
+
+or 
+
+yarn start
+
+
+then pray to your desired god
