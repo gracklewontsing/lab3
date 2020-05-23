@@ -1,6 +1,6 @@
 # lab3
 
-Contains: backend trackerapp directory (maven springboot)
+Contains: backend directory trackerapp (maven springboot)
 and 
 frontend directory trackerapp/expensetracker (react.js)
 
