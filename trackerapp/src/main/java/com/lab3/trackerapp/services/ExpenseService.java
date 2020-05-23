@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.lab3.trackerapp.model.Expense;
 
+import org.springframework.stereotype.Service;
+
 public interface ExpenseService {
+
     List<Expense> findAll();
     List<Expense> findByMonthAndYear(int month, int year);
     void saveOrUpdateExpense(Expense expense);

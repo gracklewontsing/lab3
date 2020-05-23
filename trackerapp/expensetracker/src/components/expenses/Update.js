@@ -118,7 +118,7 @@ update(e) {
         year: e.state.year
     }
     
-    axios.post('http://localhost:8080/expense',expense).then(function(response) {
+    axios.post('http://localhost:8080/api/expense',expense).then(function(response) {
       e.setState({
         messageFromServer: response.data
       });
@@ -159,9 +159,6 @@ render() {
                 <option value="12" id="Dec">December</option>
              </select>
            <label for="year">Year:</label><select id="year" name="year" value={this.state.year} onChange={this.handleSelectChange}>
-                <option value="2017" id="17">2017</option>
-                <option value="2018" id="18">2018</option>
-                <option value="2019" id="19">2019</option>
                 <option value="2020" id="20">2020</option>
              </select>
           </fieldset>

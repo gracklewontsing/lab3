@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/user-management/*")
-public class UserController {
+public class
+UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -44,6 +45,11 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
         return ResponseEntity.ok(userService.save(user));
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<?> logout() throws Exception {
+        return ResponseEntity.ok(null);
     }
 
     private void authenticate(String username, String password) throws Exception {

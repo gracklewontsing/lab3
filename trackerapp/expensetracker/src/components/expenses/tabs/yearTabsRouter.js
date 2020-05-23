@@ -8,7 +8,7 @@ constructor(){
   this.state={style:{'font-size': '16px'}}
  }
  render(){
-   return <Link to={{pathname: '/', search: '?month=All&year='+this.props.year }} >
+   return <Link to={{pathname: '/expenses/'+ this.props.year }} >
      <p style={this.state.style}>{this.props.year}</p>
     </Link>
  }

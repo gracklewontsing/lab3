@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 var querystring = require('querystring');
+
 class Add extends React.Component {
 constructor() {
       super();
@@ -46,7 +47,7 @@ closeModal() {
       });
     }
 componentDidMount() {
-    if(this.props.selectedMonth == 'All'){
+    if(this.props.selectedMonth == 0){
       this.setState({
         month: 1
       });
@@ -61,7 +62,7 @@ componentDidMount() {
       });
     }
 componentWillReceiveProps(nextProps){
-      if(this.props.selectedMonth == 'All'){
+      if(this.props.selectedMonth == 0){
         this.setState({
           month: 1
         });
@@ -101,7 +102,7 @@ insertNewExpense(e) {
       month: e.state.month,
       year: e.state.year
     }
-      axios.post('http://localhost:8080/expense', expense).then(function(response) {
+      axios.post('http://localhost:8080/api/expense', expense).then(function(response) {
         e.setState({
           messageFromServer: response.data
         });
@@ -123,6 +124,16 @@ handleTextChange(e) {
                 day: e.target.value
               });
             }
+    if (e.target.name == "month") {
+                  this.setState({
+                    month: e.target.value
+                  });
+                }
+      if (e.target.name == "year") {
+                    this.setState({
+                      year: e.target.value
+                    });
+                  }
       if (e.target.name == "towhom") {
               this.setState({
                 towhom: e.target.value
@@ -143,13 +154,13 @@ render() {
    if(this.state.messageFromServer == ''){
       return (
         <div>
-      <Button bsStyle="success" bsSize="small" onClick={this.openModal}><span className="glyphicon glyphicon-plus"></span></Button>
+        <Button bsStyle="success" bsSize="small" onClick={this.openModal}><span className="glyphicon glyphicon-plus"></span></Button>
           <Modal
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.closeModal}
             contentLabel="Add Expense"
-       className="Modal">
-<Link to={{pathname: '/', search: '?month='+this.state.month+'&year='+this.state.year }} style={{ textDecoration: 'none' }}>
+             className="Modal">
+        <Link to={{pathname: '/', search: '?month='+this.state.month+'&year='+this.state.year }} style={{ textDecoration: 'none' }}>
        <Button bsStyle="danger" bsSize="mini" onClick={this.closeModal}><span className="closebtn glyphicon glyphicon-remove"></span></Button>
       </Link><br/>
 <fieldset>
@@ -174,13 +185,10 @@ render() {
             <option value="12" id="Dec">December</option>
          </select>
        <label htmlFor="year">Year:</label><select id="year" name="year" value={this.state.year} onChange={this.handleSelectChange}>
-            <option value="2017" id="17">2017</option>
-            <option value="2018" id="18">2018</option>
-            <option value="2019" id="19">2019</option>
             <option value="2020" id="20">2020</option>
          </select>
       </fieldset>
-<div className='button-center'>
+            <div className='button-center'>
         <br/>
         <Button bsStyle="success" bsSize="small" onClick={this.onClick}>Add New Expense</Button>
        </div>
